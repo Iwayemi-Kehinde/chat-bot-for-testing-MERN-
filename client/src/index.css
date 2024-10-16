@@ -1,0 +1,14 @@
+html, body {
+   margin: 0;
+   padding: 0;
+   background: rgb(1, 1, 19);
+   color: rgb(255, 255, 255);
+}
+
+*{
+   box-sizing: border-box;
+}
+
+.image-inverted {
+   filter: invert(100%);
+}
