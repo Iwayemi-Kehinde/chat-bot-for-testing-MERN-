@@ -8,7 +8,7 @@ export const validate = (validations: ValidationChain[]) => {
       if (!result.isEmpty()) {
         break;
       }
-    }
+    }   
     const errors = validationResult(req)
     if(errors.isEmpty()) {
       return next()
@@ -17,8 +17,13 @@ export const validate = (validations: ValidationChain[]) => {
   }
 }
 
-export const signupValidator = [
+export const loginValidator = [
   body("name").notEmpty().withMessage("Name is required"),
   body("email").trim().isEmail().withMessage("Email is required"),
   body("password").trim().isLength({ min: 6 }).withMessage("Password should contain atleast 6 characters")
+]
+
+export const signupValidator =[
+  body("name").notEmpty().withMessage("Name is required"),
+  ...loginValidator
 ]
