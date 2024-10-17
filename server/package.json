@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "This is an AI Chatbot application, inspired by ChatGPT, by using MERN Stack and OpenAI",
   "main": "index.ts",
-    "type": "module",
-    "scripts": {
-      "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\" ",
-      "build": "tsc",
-      "start": "node dist/index.js"
-    },
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\" ",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "concurrently": "^9.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
