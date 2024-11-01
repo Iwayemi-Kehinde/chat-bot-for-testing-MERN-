@@ -26,12 +26,12 @@ export const userSignup = async (req: Request, res: Response, next: NextFunction
 		const user = new User({ name, email, password: hashedPassword })
 		await user.save()
 
-		res.clearCookie(COOKIE_NAME, {httpOnly: true, domain: "localhost", signed: true, path: "/"})
+		res.clearCookie(COOKIE_NAME, { httpOnly: true, domain: "localhost", signed: true, path: "/" })
 		const token = createToken(user._id.toString(), user.email, "7d")
 		const expires = new Date()
 		expires.setDate(expires.getDate() + 7)
 		res.cookie(COOKIE_NAME, token, { path: "/", domain: "localhost", expires, httpOnly: true, signed: true })
-		return res.status(200).json({ message: "OK", email: user.email, name:user.name })
+		return res.status(200).json({ message: "OK", email: user.email, name: user.name })
 	} catch (error: any) {
 		return res.status(500).json({ error: error.message })
 	}
@@ -50,16 +50,31 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
 			return res.status(403).send("Incorrect Password")
 		}
 
-		res.clearCookie(COOKIE_NAME, {httpOnly: true, domain: "localhost", signed: true, path: "/"})
+		res.clearCookie(COOKIE_NAME, { httpOnly: true, domain: "localhost", signed: true, path: "/" })
 		const token = createToken(existingUser._id.toString(), existingUser.email, "7d")
 		const expires = new Date()
 		expires.setDate(expires.getDate() + 7)
 		res.cookie(COOKIE_NAME, token, { path: "/", domain: "localhost", expires, httpOnly: true, signed: true })
- 
-		return res.status(200).json({ message: "OK", name:existingUser.name, email:existingUser.email })
+
+		return res.status(200).json({ message: "OK", name: existingUser.name, email: existingUser.email })
 	} catch (error: any) {
 		return res.status(500).json({ error: error.message })
 	}
-} 
+}
 
+export const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const user = await User.findById(res.locals.jwtData.id)
+		if (!user) {
+			return res.status(401).send("User not registered or token malfunctioned")
+		}
+		if (user._id.toString() !== res.locals.jwtData.id) {
+			return res.status(401).send("Permissions didn't match")
+		}
+		return res.status(200).json({ message: "OK", name: user.name, email: user.email })
+	} catch (error) {
+		console.log(error)
+		return res.status(404)
+	}
 
+}
